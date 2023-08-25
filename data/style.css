@@ -1,0 +1,71 @@
+#settings{
+    width: 140px;
+    height: 35px;
+    font-size: 30px;
+    font-weight: 600;
+    background-color: aqua;
+    text-align: center;
+    float: left;
+}
+
+#monitor{
+    width: 140px;
+    height: 35px;
+    font-size: 30px;
+    font-weight: 600;
+    background-color: red;
+    text-align: center;
+    float: left;
+}
+
+#terminal{
+    width: 140px;
+    height: 35px;
+    font-size: 30px;
+    font-weight: 600;
+    background-color: greenyellow;
+    text-align: center;
+    float: left;
+}
+
+#content{
+    clear: both;
+    width: 100%;
+    height: 900px;
+}
+
+#info_table{
+    margin: auto;
+    padding-top: 10px;
+    width: 500px ;
+}
+
+body{
+    margin: auto;
+    width: 800px;
+}
+
+#settings_form{
+    margin: auto;
+    padding-top: 10px;
+    width: 500px ;
+}
+
+#terminal_form{
+    margin: auto;
+    padding-top: 10px;
+    width: 500px ;
+}
+
+.form_label{
+    padding: 2px 0px;
+    clear: both;
+    float: left;
+    display: block;
+    width: 150px;
+}
+
+.form_item{
+    margin: 2px 0px;
+    float: left;
+}

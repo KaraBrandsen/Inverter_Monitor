@@ -1,0 +1,233 @@
+<html>
+<head>
+    <title>Inverter Monitor</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script type = "text/javascript">
+        setInterval(function (){
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+
+                        var api_data = JSON.parse(this.responseText);
+
+                        document.getElementById('grid_voltage').innerHTML = api_data["grid_voltage"] + " V";
+                        document.getElementById('grid_current').innerHTML = api_data["grid_current"] + " A";
+                        document.getElementById('grid_power').innerHTML = api_data["grid_power"] + " W";
+                        document.getElementById('grid_frequency').innerHTML = api_data["grid_frequency"] + " Hz";
+                        document.getElementById('output_voltage').innerHTML = api_data["output_voltage"] + " V";
+                        document.getElementById('output_current').innerHTML = api_data["output_current"] + " A";
+                        document.getElementById('output_power').innerHTML = api_data["output_power"] + " W";
+                        document.getElementById('output_frequency').innerHTML = api_data["output_frequency"] + " Hz";
+                        document.getElementById('output_load').innerHTML = api_data["percent_load"] + " %";
+                        document.getElementById('battery_voltage').innerHTML = api_data["battery_voltage"] + " V";
+                        document.getElementById('pv_power').innerHTML = api_data["pv_power"] + "W";
+                        document.getElementById('pv_voltage').innerHTML = api_data["pv_voltage"] + "V";
+                        document.getElementById('boost_section_temp').innerHTML = api_data["boost_temp"] + " &deg;C";
+                        document.getElementById('inverter_section_temp').innerHTML = api_data["inverter_temp"] + " &deg;C";
+                        document.getElementById('internal_temp').innerHTML = api_data["internal_temp"] + " &deg;C";
+                        document.getElementById('external_temp').innerHTML = api_data["external_temp"] + " &deg;C";
+                        document.getElementById('total_generated').innerHTML = api_data["total_energy"] + " kWh";
+                        document.getElementById('cumulative_pv_generated').innerHTML = api_data["cumulative_pv_total"] + " kWh";
+                        document.getElementById('current_time').innerHTML = api_data["current_time"];
+                        document.getElementById('Last_update_time').innerHTML = api_data["last_update_time"];
+                        document.getElementById('startup_time').innerHTML = api_data["startup_time"];
+                        document.getElementById('uptime').innerHTML = api_data["uptime"];
+                    }
+                };
+            xhttp.open("GET", "/get_data", true);
+            xhttp.send();
+        }, 10000);
+
+        function send_receive(event){
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+
+                        var received_data = this.responseText;
+
+                        document.getElementById('serial_send').innerHTML = "";
+                        document.getElementById('serial_receive').innerHTML = document.getElementById('serial_receive').innerHTML + received_data + "\n";
+                    }
+                };
+            xhttp.open("GET", "/send_data?send=" + document.getElementById('serial_send').value, true);
+            xhttp.send();
+            return false;
+        }
+
+        function switch_tab(event){
+            var monitor_tab = document.getElementById('monitor_tab');
+            var settings_tab = document.getElementById('settings_tab');
+            var terminal_tab = document.getElementById('terminal_tab');
+
+            if(event.innerHTML == "Monitor"){
+                settings_tab.style.display = "None";
+                terminal_tab.style.display = "None";
+                monitor_tab.style.display = "block";
+            }
+            if(event.innerHTML == "Settings"){
+                settings_tab.style.display = "block";
+                terminal_tab.style.display = "None";
+                monitor_tab.style.display = "None";
+            }
+            if(event.innerHTML == "Terminal"){
+                settings_tab.style.display = "None";
+                terminal_tab.style.display = "block";
+                monitor_tab.style.display = "None";
+            }
+        };
+    </script>
+</head>
+<body>
+    <H2>Inverter Monitor</H2>
+    <div id="monitor" onclick="switch_tab(this)" value="monitor">Monitor</div>
+    <div id="settings" onclick="switch_tab(this)" value="settings">Settings</div>
+    <div id="terminal" onclick="switch_tab(this)" value="terminal">Terminal</div>
+    <div id="content">
+        <div id="monitor_tab">
+            <table id="info_table">
+                <tr>
+                    <td>Grid Voltage:</td>
+                    <td id="grid_voltage">%grid_voltage% V</td>
+                </tr>
+                <tr>
+                    <td>Grid Current:</td>
+                    <td id="grid_current">%grid_current% A</td>
+                </tr>
+                <tr>
+                    <td>Grid Power:</td>
+                    <td id="grid_power">%grid_power% W</td>
+                </tr>
+                <tr>
+                    <td>Grid Frequency:</td>
+                    <td id="grid_frequency">%grid_frequency% Hz</td>
+                </tr>
+                <tr>
+                    <td>Output Voltage:</td>
+                    <td id="output_voltage">%output_voltage% V</td>
+                </tr>
+                <tr>
+                    <td>Output Current:</td>
+                    <td id="output_current">%output_current% A</td>
+                </tr>
+                <tr>
+                    <td>Output Power:</td>
+                    <td id="output_power">%output_power% W</td>
+                </tr>
+                <tr>
+                    <td>Output Frequency:</td>
+                    <td id="output_frequency">%output_frequency% Hz</td>
+                </tr>
+                <tr>
+                    <td>Output Load:</td>
+                    <td id="output_load">%output_load% &percnt;</td>
+                </tr>
+                <tr>
+                    <td>Battery Voltage:</td>
+                    <td id="battery_voltage">%battery_voltage% V</td>
+                </tr>
+                <tr>
+                    <td>PV Power:</td>
+                    <td id="pv_power">%pv_power% W</td>
+                </tr>
+                <tr>
+                    <td>PV Voltage:</td>
+                    <td id="pv_voltage">%pv_voltage% V</td>
+                </tr>
+                <tr>
+                    <td>Boost Section Temp:</td>
+                    <td id="boost_section_temp">%boost_section_temp% &deg;C</td>
+                </tr>
+                <tr>
+                    <td>Inverter Section Temp:</td>
+                    <td id="inverter_section_temp">%inverter_section_temp% &deg;C</td>
+                </tr>
+                <tr>
+                    <td>Internal Temp:</td>
+                    <td id="internal_temp">%internal_temp% &deg;C</td>
+                </tr>
+                <tr>
+                    <td>External Temp:</td>
+                    <td id="external_temp">%external_temp% &deg;C</td>
+                </tr>
+                <tr>
+                    <td>Total Generated:</td>
+                    <td id="total_generated">%total_generated% kWh</td>
+                </tr>
+                <tr>
+                    <td>Cumulative PV Generated:</td>
+                    <td id="cumulative_pv_generated">%cumulative_pv_generated% kWh</td>
+                </tr>
+                <tr>
+                    <td>Current Time:</td>
+                    <td id="current_time">%current_time%</td>
+                </tr>
+                <tr>
+                    <td>Last Update Time:</td>
+                    <td id="Last_update_time">%Last_update_time%</td>
+                </tr>
+                <tr>
+                    <td>Startup Time:</td>
+                    <td id="startup_time">%startup_time%</td>
+                </tr>
+                <tr>
+                    <td>Uptime:</td>
+                    <td id="uptime">%uptime%</td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="settings_tab" style="display:none">
+            <form id="settings_form" action="/" method="post">
+                <label for="host" class="form_label">Host Name:</label>
+                <input type="text" id="host" name="host" class="form_item" value="%host%"><br>
+
+                <label for="ssid" class="form_label">SSID:</label>
+                <input type="text" id="ssid" name="ssid" class="form_item" value="%ssid%"><br>
+
+                <label for="password" class="form_label">Password:</label>
+                <input type="text" id="password" name="password" class="form_item" value="%password%"><br>
+
+                <label for="mqtt_host" class="form_label">MQTT Host:</label>
+                <input type="text" id="mqtt_host" name="mqtt_host" class="form_item" value="%mqtt_host%"><br>
+
+                <label for="mqtt_port" class="form_label">MQTT Port:</label>
+                <input type="number" id="mqtt_port" name="mqtt_port" class="form_item" value="%mqtt_port%"><br>
+
+                <label for="mqtt_topic" class="form_label">Topic:</label>
+                <input type="text" id="mqtt_topic" name="mqtt_topic" class="form_item" value="%mqtt_topic%"><br>
+
+                <label for="interval" class="form_label">Poll Interval:</label>
+                <input type="number" id="interval" name="interval" class="form_item" value="%interval%"><br>
+
+                <label for="discovery" class="form_label">Discovery Interval:</label>
+                <input type="number" id="discovery" name="discovery" class="form_item" value="%discovery%"><br>
+
+                <label for="serial_timeout" class="form_label">Serial Timeout:</label>
+                <input type="number" id="serial_timeout" name="serial_timeout" class="form_item" value="%serial_timeout%"><br>
+
+                <label for="wifi_timeout" class="form_label">Wifi Timeout:</label>
+                <input type="number" id="wifi_timeout" name="wifi_timeout" class="form_item" value="%wifi_timeout%"><br>
+
+                <label for="inverters" class="form_label">Inverter Type:</label>
+                <select id="inverters" name="inverters" class="form_item" value="%inverters%">
+                    <option value="0">Voltronic Power</option>
+                    <option value="1">Axpert</option>
+                </select><br>
+
+                <input type="submit" value="Submit" class="form_label">
+            </form>
+        </div>
+
+        <div id="terminal_tab" style="display:none">
+            <div id="terminal_form">
+                <label for="serial_send" class="form_label">Send:</label>
+                <input type="text" id="serial_send" name="serial_send" class="form_item" value="">
+                <button type="button" value="Submit" class="form_item" style="margin-left: 5px" onclick="send_receive(this)">Send</button>
+                
+                <label for="serial_receive" class="form_label">Receive:</label>
+                <textarea id="serial_receive" name="serial_receive" style="clear:both" rows="10" cols="65"></textarea>
+            </div>
+        </div>
+    </div>
+</body>

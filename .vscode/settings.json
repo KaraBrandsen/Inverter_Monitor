@@ -1,0 +1,6 @@
+{
+    "cmake.sourceDirectory": "C:/OneDrive/Projects/Electronics/Inverter Monitor/.pio/libdeps/esp_wroom_02/Adafruit BusIO",
+    "files.associations": {
+        "string": "cpp"
+    }
+}
